@@ -20,22 +20,10 @@ app.use(passport.session());
 
 app.use(express.static('./public'));
 
-
-
-/////////////
-// DATABASE //
-/////////////
 const massiveInstance = massive.connectSync({connectionString: 'postgres://localhost/sandbox'})
 
 app.set('db', massiveInstance);
 const db = app.get('db');
-
-// db.create_user(function(err, user) {
-//   if (err) console.log(err);
-//   else console.log('CREATED USER');
-//   console.log(user);
-// })
-
 
 passport.use(new Auth0Strategy({
    domain:       config.auth0.domain,
@@ -60,7 +48,6 @@ passport.use(new Auth0Strategy({
     })
   }
 ));
-
 //THIS IS INVOKED ONE TIME TO SET THINGS UP
 passport.serializeUser(function(userA, done) {
   console.log('serializing', userA);
@@ -78,18 +65,7 @@ passport.deserializeUser(function(userB, done) {
   done(null, userC); //PUTS 'USER' ON REQ.USER
 });
 
-
-
 app.get('/auth', passport.authenticate('auth0'));
-
-
-//**************************//
-//To force specific provider://
-//**************************//
-// app.get('/login/google',
-//   passport.authenticate('auth0', {connection: 'google-oauth2'}), function (req, res) {
-//   res.redirect("/");
-// });
 
 app.get('/auth/callback',
   passport.authenticate('auth0', {successRedirect: '/'}), function(req, res) {
