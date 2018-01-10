@@ -40,6 +40,8 @@ passport.use(new Auth0Strategy({
         db.createUserByAuth([profile.displayName, profile.id], function(err, user) {
           console.log('USER CREATED', userA);
           return done(err, user[0]); // GOES TO SERIALIZE USER
+          //The first argument is for errors if you aren't experiencing errors you can just put null there and the second is the profile that you want passed on. 
+          
         })
       } else { //when we find the user, return it
         console.log('FOUND USER', user);
